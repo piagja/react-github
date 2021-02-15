@@ -24,8 +24,9 @@ export const Form = styled.form`
     &::placeholder {
       color: #a8a8b3;
     }
+  }
 
-    button {
+  button {
       width: 200px;
       height: 70px;
       background-color: #00D25A;
@@ -39,9 +40,53 @@ export const Form = styled.form`
         background: ${shade(0.2, '#00D25A')};
       }
     }
-  }
 `
 
 export const Repositories = styled.div`
+  margin-top: 88px;
+  max-width: 700px;
 
+  a {
+    background: #fff;
+    border-radius: 5px;
+    width: 100%;
+    padding: 24px;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    transition: .5s;
+
+    &:hover {
+      transform: translateX(10px);
+    }
+
+    & + a {
+        margin-top: 18px;
+    }
+
+    img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+
+    div {
+      margin-left: 16px;
+
+      strong {
+        font-size: 20px;
+        color: #3D3D4D;
+      }
+
+      p {
+        font-size: 18px;
+        color: #3D3D4D;
+      }
+    }
+
+    svg {
+      margin-left: auto;
+      color: #cbcbd6;
+    }
+  }
 `

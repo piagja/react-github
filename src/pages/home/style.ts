@@ -90,3 +90,12 @@ export const Repositories = styled.div`
     }
   }
 `
+
+export const Button = styled.button`
+  height: 50px; 
+  width: 100px; 
+  border: none; 
+  background: lightgray; 
+  border-radius: 15px;
+  margin-top: 20px;
+`

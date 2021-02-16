@@ -1,6 +1,7 @@
 import React,  { FormEvent, useState } from 'react';
-import { Title, Form, Repositories } from './style'
+import { Title, Form, Repositories, Button } from './style'
 import { FiChevronRight } from 'react-icons/fi'
+import { toast } from 'react-toastify'
 
 import Logo from '../../img/logo-github.svg'
 import api from '../../services/api';
@@ -19,12 +20,22 @@ const Home: React.FC = () => {
   const [repositories, setRepositories] = useState<Repository[]>([])
 
   async function handleAddRepository (event: FormEvent<HTMLFormElement>) {
+    try {
     // adicionar novos repositorios
     event.preventDefault()
     const response = await api.get(`repos/${newRepo}`)
     const repository = response.data
-    console.log(repository)
     setRepositories([...repositories, repository])
+    setNewRepo('')
+    toast.success('Repositório adicionado com sucesso!')
+    } catch (e) {
+      return toast.error('Deu erro: ' + e)
+    }
+  }
+
+  function clearRepos() {
+    setRepositories([])
+    toast.success('Repositórios limpos!')
   }
 
   return (
@@ -55,6 +66,7 @@ const Home: React.FC = () => {
           </a>
           ))}
       </Repositories>
+      <Button onClick={clearRepos}>Limpar</Button>
     </>
   )
 }

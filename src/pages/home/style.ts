@@ -98,4 +98,10 @@ export const Button = styled.button`
   background: lightgray; 
   border-radius: 15px;
   margin-top: 20px;
+  color: #011;
+
+  &:hover {
+    transform: translateX(10px);
+    transition: .5s;
+  }
 `

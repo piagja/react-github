@@ -23,6 +23,9 @@ const Home: React.FC = () => {
     try {
     // adicionar novos repositorios
     event.preventDefault()
+    if (!newRepo) {
+      toast.error('Campo vazio, por favor, preencha-o corretamente.')
+    }
     const response = await api.get(`repos/${newRepo}`)
     const repository = response.data
     setRepositories([...repositories, repository])
@@ -41,7 +44,7 @@ const Home: React.FC = () => {
   return (
     <>
       <img src={Logo} alt='Logo app' />
-      <Title>Encontre no Github</Title>
+      <Title>Encontre repositórios no Github</Title>
       <Form onSubmit={handleAddRepository}>
         <input 
           value={newRepo}
@@ -52,7 +55,7 @@ const Home: React.FC = () => {
       </Form>
       <Repositories>
           { repositories.map((repo, index) => (
-          <a key={index} href="/">
+          <a key={index} href="repo">
             <>
               <img 
                 src={repo.owner.avatar_url} 

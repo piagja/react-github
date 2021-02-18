@@ -1,5 +1,5 @@
 import React,  { FormEvent, useState } from 'react';
-import { Title, Form, Repositories, Button } from './style'
+import { Title, Form, Repositories, Button, Error } from './style'
 import { FiChevronRight } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 
@@ -17,6 +17,7 @@ interface Repository {
 
 const Home: React.FC = () => {
   const [newRepo, setNewRepo] = useState('')
+  const [inputError, setInputError] = useState('')
   const [repositories, setRepositories] = useState<Repository[]>([])
 
   async function handleAddRepository (event: FormEvent<HTMLFormElement>) {
@@ -24,15 +25,19 @@ const Home: React.FC = () => {
     // adicionar novos repositorios
     event.preventDefault()
     if (!newRepo) {
+      setInputError('Digite o nome do repositório: usuário/repositório!')
       toast.error('Campo vazio, por favor, preencha-o corretamente.')
+      return
     }
+
     const response = await api.get(`repos/${newRepo}`)
     const repository = response.data
     setRepositories([...repositories, repository])
     setNewRepo('')
     toast.success('Repositório adicionado com sucesso!')
     } catch (e) {
-      return toast.error('Deu erro: ' + e)
+      setInputError('Digite o nome do repositório: usuário/repositório!')
+      return toast.error('Erro na requisição ' + e)
     }
   }
 
@@ -45,7 +50,7 @@ const Home: React.FC = () => {
     <>
       <img src={Logo} alt='Logo app' />
       <Title>Encontre repositórios no Github</Title>
-      <Form onSubmit={handleAddRepository}>
+      <Form hasError={!!inputError} onSubmit={handleAddRepository}>
         <input 
           value={newRepo}
           onChange={e => setNewRepo(e.target.value)}
@@ -53,6 +58,7 @@ const Home: React.FC = () => {
           placeholder='Pesquise pelo Github'/>
         <button type='submit'>Pesquisar</button>
       </Form>
+      {inputError && <Error>{inputError}</Error>}        
       <Repositories>
           { repositories.map((repo, index) => (
           <a key={index} href="repo">

@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../../img/logo-github.svg'
-import { FiChevronLeft } from 'react-icons/fi'
-import { Header, RepositoryInfo } from './style'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { Header, RepositoryInfo, Issues } from './style'
 import { Link, useRouteMatch } from 'react-router-dom'
 
 interface RepositoryParams {
@@ -9,6 +9,8 @@ interface RepositoryParams {
 }
 
 const Repository: React.FC = () => {
+  const [repository, setRepository] = useState()
+  const [issues, setIssues] = useState()
   const { params } = useRouteMatch<RepositoryParams>()
 
   return (
@@ -42,6 +44,28 @@ const Repository: React.FC = () => {
           </li>
         </ul>
       </RepositoryInfo>
+      <Issues>
+
+        <a href="la">
+          <div>
+              <div>
+                <strong>Issues Title</strong>
+                <p>description</p>
+              </div>
+          </div>
+              <FiChevronRight size={40}/>
+        </a>
+        <a href="la">
+          <div>
+              <div>
+                <strong>Issues Title</strong>
+                <p>description</p>
+              </div>
+          </div>
+              <FiChevronRight size={40}/>
+        </a>
+
+      </Issues>
     </>
   )
 }

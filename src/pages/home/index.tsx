@@ -2,6 +2,7 @@ import React,  { FormEvent, useState } from 'react';
 import { Title, Form, Repositories, Button, Error } from './style'
 import { FiChevronRight } from 'react-icons/fi'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 import Logo from '../../img/logo-github.svg'
 import api from '../../services/api';
@@ -61,7 +62,7 @@ const Home: React.FC = () => {
       {inputError && <Error>{inputError}</Error>}        
       <Repositories>
           { repositories.map((repo, index) => (
-          <a key={index} href="repo">
+          <Link key={index} to="repository">
             <>
               <img 
                 src={repo.owner.avatar_url} 
@@ -72,7 +73,7 @@ const Home: React.FC = () => {
               </div>
               <FiChevronRight size={40}/>
             </>
-          </a>
+          </Link>
           ))}
       </Repositories>
       <Button onClick={clearRepos}>Limpar</Button>

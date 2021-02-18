@@ -1,4 +1,4 @@
-import React,  { FormEvent, useState } from 'react';
+import React,  { FormEvent, useState, useEffect } from 'react';
 import { Title, Form, Repositories, Button, Error } from './style'
 import { FiChevronRight } from 'react-icons/fi'
 import { toast } from 'react-toastify'
@@ -19,7 +19,18 @@ interface Repository {
 const Home: React.FC = () => {
   const [newRepo, setNewRepo] = useState('')
   const [inputError, setInputError] = useState('')
-  const [repositories, setRepositories] = useState<Repository[]>([])
+  const [repositories, setRepositories] = useState<Repository[]>(() => {
+    const storageRepositories = localStorage.getItem('@githubexplorer')
+    if (storageRepositories) {
+      return JSON.parse(storageRepositories)
+    } else {
+      return []
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('@githubexplorer', JSON.stringify(repositories))
+  }, [repositories])
 
   async function handleAddRepository (event: FormEvent<HTMLFormElement>) {
     try {
@@ -35,6 +46,7 @@ const Home: React.FC = () => {
     const repository = response.data
     setRepositories([...repositories, repository])
     setNewRepo('')
+    setInputError('')
     toast.success('Repositório adicionado com sucesso!')
     } catch (e) {
       setInputError('Digite o nome do repositório: usuário/repositório!')
@@ -62,7 +74,7 @@ const Home: React.FC = () => {
       {inputError && <Error>{inputError}</Error>}        
       <Repositories>
           { repositories.map((repo, index) => (
-          <Link key={index} to="repository">
+          <Link key={index} to={`repository/${repo.full_name}`}>
             <>
               <img 
                 src={repo.owner.avatar_url} 

@@ -5,10 +5,6 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { Header, RepositoryInfo, Issues } from './style'
 import { Link, useRouteMatch } from 'react-router-dom'
 
-interface RepositoryParams {
-  repository: string
-}
-
 interface Repository {
   full_name: string,
   description: string,
@@ -21,9 +17,22 @@ interface Repository {
   }
 }
 
+interface RepositoryParams {
+  repository: string
+}
+
+interface IssuesParams {
+  id: number,
+  title: string,
+  html_url: string,
+  user: {
+    login: string
+  }
+}
+
 const Repository: React.FC = () => {
   const [repository, setRepository] = useState<Repository | null>(null)
-  const [issues, setIssues] = useState()
+  const [issues, setIssues] = useState<IssuesParams[]>([])
   const { params } = useRouteMatch<RepositoryParams>()
 
   useEffect(() => {
@@ -37,9 +46,20 @@ const Repository: React.FC = () => {
     api.get(`repos/${params.repository}/issues`).then(
       response => {
         console.log(response.data)
+        setIssues(response.data)
       }
     )
-  }, [])
+
+    // async function loadData(): Promise<void> {
+    //   const repository = await api.get(`repos/${params.repository}`)
+    //   const issues = await api.get(`repos/${params.repository}/issues`)
+
+    //   console.log('repository', repository.data)
+    //   console.log('issues', issues.data)
+    // }
+
+    // loadData()
+  }, [params.repository])
 
   return (
     <>
@@ -74,27 +94,19 @@ const Repository: React.FC = () => {
           </ul>
         </RepositoryInfo>
         )}
+
       <Issues>
-
-        <a href="la">
-          <div>
-              <div>
-                <strong>Issues Title</strong>
-                <p>description</p>
+        {issues.map(issue => (
+          <a key={issue.id} href={issue.html_url}>
+            <div>
+                <div>
+                  <strong>{issue.title}</strong>
+                  <p>{issue.user.login}</p>
+                </div>
               </div>
-          </div>
-              <FiChevronRight size={40}/>
-        </a>
-        <a href="la">
-          <div>
-              <div>
-                <strong>Issues Title</strong>
-                <p>description</p>
-              </div>
-          </div>
-              <FiChevronRight size={40}/>
-        </a>
-
+            <FiChevronRight size={40}/>
+          </a>
+        ))}
       </Issues>
     </>
   )

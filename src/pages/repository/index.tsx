@@ -33,6 +33,7 @@ interface IssuesParams {
 const Repository: React.FC = () => {
   const [repository, setRepository] = useState<Repositories | null>(null)
   const [issues, setIssues] = useState<IssuesParams[]>([])
+  const [load, setLoad] = useState(true)
   const { params } = useRouteMatch<RepositoryParams>()
 
   useEffect(() => {
@@ -40,6 +41,10 @@ const Repository: React.FC = () => {
       response => {
         console.log(response.data)
         setRepository(response.data)
+
+        setTimeout(() => {
+          setLoad(false)
+        }, 3000)
       }
     )
 
@@ -47,6 +52,10 @@ const Repository: React.FC = () => {
       response => {
         console.log(response.data)
         setIssues(response.data)
+
+        setTimeout(() => {
+          setLoad(false)
+        }, 3000)
       }
     )
 
@@ -61,12 +70,16 @@ const Repository: React.FC = () => {
     // loadData()
   }, [params.repository])
 
+  function openTab(link: string) {
+    window.open(link, '_blank')
+  }
+
   return (
     <>
       <Header>
         <img src={Logo} alt='Logo app' />
         <Link to='/'>
-          <FiChevronLeft size={40}/> Go Back
+          <FiChevronLeft size={40}/>Go Back
         </Link>
       </Header>
       { repository && (
@@ -94,20 +107,25 @@ const Repository: React.FC = () => {
           </ul>
         </RepositoryInfo>
         )}
-
-      <Issues>
-        {issues.map(issue => (
-          <a key={issue.id} href={issue.html_url}>
-            <div>
-                <div>
-                  <strong>{issue.title}</strong>
-                  <p>{issue.user.login}</p>
+        {load ? <h1 style={{textAlign: 'center', marginTop: '36px'}}>Carregando ...</h1> : (
+          <Issues>
+          {issues.map(issue => (
+            <a 
+              key={issue.id}
+              href='/'
+              onClick={() => openTab(issue.html_url)}>
+              <div>
+                  <div>
+                    <strong>{issue.title}</strong>
+                    <p>{issue.user.login}</p>
+                  </div>
                 </div>
-              </div>
-            <FiChevronRight size={40}/>
-          </a>
-        ))}
-      </Issues>
+              <FiChevronRight size={40}/>
+            </a>
+          ))}
+          </Issues>
+        )}
+          
     </>
   )
 }

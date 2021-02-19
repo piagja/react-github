@@ -5,7 +5,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { Header, RepositoryInfo, Issues } from './style'
 import { Link, useRouteMatch } from 'react-router-dom'
 
-interface Repository {
+interface Repositories {
   full_name: string,
   description: string,
   forks_count: number,
@@ -31,7 +31,7 @@ interface IssuesParams {
 }
 
 const Repository: React.FC = () => {
-  const [repository, setRepository] = useState<Repository | null>(null)
+  const [repository, setRepository] = useState<Repositories | null>(null)
   const [issues, setIssues] = useState<IssuesParams[]>([])
   const { params } = useRouteMatch<RepositoryParams>()
 

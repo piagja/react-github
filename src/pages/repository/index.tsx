@@ -112,6 +112,7 @@ const Repository: React.FC = () => {
           {issues.map(issue => (
             <a 
               key={issue.id}
+              href='javacript:void(0)'
               onClick={() => openTab(issue.html_url)}>
               <div>
                   <div>

@@ -27,7 +27,12 @@ interface IssuesParams {
   html_url: string,
   user: {
     login: string
-  }
+  },
+  updated_at: number
+}
+
+const formatDate = (date: any) => {
+  return new Intl.DateTimeFormat('pt-br').format(date)
 }
 
 const Repository: React.FC = () => {
@@ -116,8 +121,9 @@ const Repository: React.FC = () => {
               onClick={() => openTab(issue.html_url)}>
               <div>
                   <div>
-                    <strong>{issue.title}</strong>
-                    <p>{issue.user.login}</p>
+                    <strong>Issue Title: {issue.title}</strong>
+                    <p>Owner: {issue.user.login}</p>
+                    <span>Updated At: {formatDate(console.log(issue.updated_at))}</span>
                   </div>
                 </div>
               <FiChevronRight size={40}/>
@@ -125,7 +131,6 @@ const Repository: React.FC = () => {
           ))}
           </Issues>
         )}
-          
     </>
   )
 }

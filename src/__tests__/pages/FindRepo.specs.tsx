@@ -5,6 +5,7 @@ import { render } from '@testing-library/react'
 
 describe('Home App', () => {
   it('Find repo', () => {
-    const {} = render(<Home/>)
+    const { debug } = render(<Home />)
+    debug()
   })
 })
